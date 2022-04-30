@@ -14,6 +14,16 @@ const validProperties = [
   "reservation_time",
 ];
 
+const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+
 /** 
  * Create handler
 */
@@ -31,7 +41,7 @@ const hasRequiredProperties = hasProperties([
   "mobile_number",
   "people",
   "reservation_date"
-])
+]);
 
 function hasValidProperties(req, res, next) {
   const { data = {} } = req.body;
@@ -78,6 +88,33 @@ function hasValidProperties(req, res, next) {
   next();
 }
 
+function isValidDay(req, res, next) {
+  const { data } = req.body;
+  const reservationDate = new Date(
+    `${data.reservation_date} ${data.reservation_time}`
+  );
+  let day = days[reservationDate.getDay()];
+  if (reservationDate < new Date() && day === "Tuesday") {
+    return next({
+      status: 400,
+      message:
+        "Reservations can only be created on a future date, excluding Tuesdays",
+    });
+  }
+  if (reservationDate < new Date()) {
+    return next({
+      status: 400,
+      message: "Reservations can only be created on a future date",
+    });
+  }
+  if (day === "Tuesday") {
+    return next({ 
+      status: 400, 
+      message: "Restaurant is closed on Tuesdays" });
+  }
+  next();
+}
+
 /**
  * List helper function, meant to help sort by date
  */
@@ -102,6 +139,6 @@ async function list(req, res) {
 }
 
 module.exports = {
-  create: [hasValidProperties, asyncErrorBoundary(create)],
+  create: [hasValidProperties, isValidDay, asyncErrorBoundary(create)],
   list: asyncErrorBoundary(list),
 };

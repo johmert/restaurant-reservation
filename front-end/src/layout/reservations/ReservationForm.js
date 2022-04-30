@@ -47,7 +47,7 @@ function ReservationForm() {
 
     return (
     <div>
-        <ErrorAlert error={showError} />
+        <ErrorAlert className="alert alert-danger" error={showError} />
         <form onSubmit={handleSubmit}>
             <label htmlFor="first_name">
                 First Name:
