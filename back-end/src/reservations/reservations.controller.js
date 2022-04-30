@@ -94,6 +94,7 @@ function isValidDay(req, res, next) {
     `${data.reservation_date} ${data.reservation_time}`
   );
   let day = days[reservationDate.getDay()];
+  let time = data.reservation_time;
   if (reservationDate < new Date() && day === "Tuesday") {
     return next({
       status: 400,
@@ -110,7 +111,14 @@ function isValidDay(req, res, next) {
   if (day === "Tuesday") {
     return next({ 
       status: 400, 
-      message: "Restaurant is closed on Tuesdays" });
+      message: "Restaurant is closed on Tuesdays" 
+    });
+  }
+  if(time <= "10:30" || time >= "21:30") {
+    return next({
+      status: 400,
+      message: "Reservations can only be made from 10:30AM - 9:30PM."
+    });
   }
   next();
 }
