@@ -88,6 +88,16 @@ function hasValidProperties(req, res, next) {
   next();
 }
 
+function isBooked(req, res, next) {
+  const { data : status } = req.body;
+  if(status === "seated" || status === "finished"){
+    return next({
+      status: 400,
+      message: "A new reservation cannot be created with a status of seated or finished"
+    });
+  }
+}
+
 function isValidDay(req, res, next) {
   const { data } = req.body;
   const reservationDate = new Date(
@@ -124,29 +134,54 @@ function isValidDay(req, res, next) {
 }
 
 /**
- * List helper function, meant to help sort by date
- */
-function compare(previous, current) {
-  if(previous.reservation_time < current.reservation_time) return -1;
-  if(previous.reservation_time > current.reservation_time) return 1;
-  if(previous.reservation_time === current.reservation_time) return 0;
-}
-
-/**
  * List handler for reservation resources
  */
 async function list(req, res) {
   const { date } = req.query;
   const reservations = await service.list(date);
+  
+  res.json({ data: reservations,});
+}
 
-  reservations.sort(compare);
+function read(req, res) {
+  res.json({ data: res.locals.reservation });
+}
 
-  res.json({
-    data: reservations,
+async function reservationExists(req, res, next) {
+  const reservation = await service.read(req.params.reservation_id);
+  if(reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Reservation ${req.body.data.reservation_id} Not Found`
   });
 }
 
+async function update(req, res, next) {
+  const updated = {
+    ...res.locals.reservation,
+    status: req.body.data.status
+  }
+  const data = await service.update(updated);
+  res.json({ data });
+}
+
 module.exports = {
-  create: [hasValidProperties, isValidDay, asyncErrorBoundary(create)],
-  list: asyncErrorBoundary(list),
+  create: [
+    hasValidProperties, 
+    hasRequiredProperties, 
+    isBooked, 
+    isValidDay, 
+    asyncErrorBoundary(create)
+  ],
+  list: [asyncErrorBoundary(list)],
+  read: [asyncErrorBoundary(reservationExists), read],
+  update: [
+    asyncErrorBoundary(reservationExists), 
+    hasValidProperties, 
+    isValidDay, 
+    asyncErrorBoundary(update)
+  ]
 };

@@ -4,6 +4,8 @@ import Dashboard from "../dashboard/Dashboard";
 import NotFound from "./NotFound";
 import { today } from "../utils/date-time";
 import ReservationForm from "./reservations/ReservationForm";
+import SeatTable from "./tables/SeatTable";
+import TableForm from "./tables/TableForm";
 
 /**
  * Defines all the routes for the application.
@@ -13,18 +15,24 @@ import ReservationForm from "./reservations/ReservationForm";
  * @returns {JSX.Element}
  */
 function Routes() {
-  const [date, setDate] = useState(today())
+  const [date, setDate] = useState(today());
 
   return (
     <Switch>
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route path="/reservations/new">
+      <Route exact={true} path="/reservations/new">
         <ReservationForm />
+      </Route>
+      <Route path="/reservations/:reservation_id/seat">
+        <SeatTable />
       </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
+      </Route>
+      <Route exact={true} path="/tables/new">
+        <TableForm />
       </Route>
       <Route path="/dashboard">
         <Dashboard date={date} setDate={setDate} />

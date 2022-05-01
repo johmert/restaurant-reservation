@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import useQuery from "../utils/useQuery";
-import { listReservations } from "../utils/api";
+import { listReservations, listTables } from "../utils/api";
 import { next, previous, today } from "../utils/date-time";
 import ErrorAlert from "../layout/ErrorAlert";
 import ReservationView from "../layout/reservations/ReservationView";
+import TableView from "../layout/tables/TableView";
 
 /**
  * Defines the dashboard page.
@@ -15,6 +16,8 @@ import ReservationView from "../layout/reservations/ReservationView";
 function Dashboard({ date, setDate }) {
   const [reservations, setReservations] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
+  const [tables, setTables] = useState([]);
+  const [tableError, setTableError] = useState(null);
   const history = useHistory();
   const query = useQuery();
   const route = useRouteMatch();
@@ -25,7 +28,7 @@ function Dashboard({ date, setDate }) {
       if(queryDate) {
         setDate(queryDate);
       } else {
-        setDate(today())
+        setDate(today());
       }
     }
     updateDate();
@@ -35,13 +38,24 @@ function Dashboard({ date, setDate }) {
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
+    setTableError(null);
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    listTables({}, abortController.signal)
+      .then(setTables)
+      .catch(setTableError);
     return () => abortController.abort();
   }
 
+  function compare(previous, current) {
+    if(previous.table_name < current.table_name) return -1;
+    if(previous.table_name > current.table_name) return 1;
+    if(previous.table_name === current.table_name) return 0;
+  }
+
   const reservationList = reservations.map((reservation, index) => <ReservationView key={index} reservation={reservation} />);
+  const tableList = tables.sort(compare).map((table, index) => <TableView key={index} table={table} />)
 
   return (
     <main>
@@ -50,15 +64,20 @@ function Dashboard({ date, setDate }) {
         <h4 className="mb-0">Reservations for date</h4>
       </div>
       <ErrorAlert error={reservationsError} />
+      <ErrorAlert error={tableError} />
       <div>
-        <h2>Reservations for {date}</h2>
         <div>
           <button onClick={() => history.push(`/dashboard?date=${previous(date)}`)}>Previous</button>
           <button onClick={() => history.push(`/dashboard?date=${today()}`)}>Today</button>
           <button onClick={() => history.push(`/dashboard?date=${next(date)}`)}>Next</button>
         </div>
+        <h2>Reservations for {date}</h2>          
+        {reservationList}
       </div>
-      {reservationList}
+      <div>
+        <h2>Tables</h2>
+        {tableList} 
+      </div>
     </main>
   );
 }

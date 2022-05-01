@@ -52,6 +52,11 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+/**
+ * Creates a new reservation
+ * @returns {Promise<{reservation}>}
+ *  a promise that resolves to a possibly empty object of reservation saved in the database.
+ */
 export async function createReservation(reservation, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`);
   const options = {
@@ -64,9 +69,25 @@ export async function createReservation(reservation, signal) {
 }
 
 /**
- * Retrieves all existing reservation.
- * @returns {Promise<[reservation]>}
- *  a promise that resolves to a possibly empty array of reservation saved in the database.
+ * Creates a new table
+ * @returns {Promise<{table}>}
+ *  a promise that resolves to a possibly empty object of table saved in the database.
+ */
+ export async function createTable(table, signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  const options = {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({data: table}),
+    signal
+  }
+  return await fetchJson(url, options, table);
+}
+
+/**
+ * Retrieves all existing reservations.
+ * @returns {Promise<[reservations]>}
+ *  a promise that resolves to a possibly empty array of reservations saved in the database.
  */
 
 export async function listReservations(params, signal) {
@@ -77,4 +98,46 @@ export async function listReservations(params, signal) {
   return await fetchJson(url, { headers, signal }, [])
     .then(formatReservationDate)
     .then(formatReservationTime);
+}
+
+/**
+ * Retrieves all tables.
+ * @returns {Promise<[tables]>}
+ *  a promise that resolves to a possibly empty array of tables saved in the database.
+ */
+
+ export async function listTables(params, signal) {
+  const url = new URL(`${API_BASE_URL}/tables`);
+  Object.entries(params).forEach(([key, value]) =>
+    url.searchParams.append(key, value.toString())
+  );
+  return await fetchJson(url, { headers, signal }, []);
+}
+
+/**
+ * Retrieves a reservation based on reservation_id.
+ * @returns {Promise<{reservation}>}
+ *  a promise that resolves to a possibly empty object of reservation saved in the database.
+ */
+
+ export async function readReservation(reservationId, signal) {
+  const url = new URL(`${API_BASE_URL}/reservations/${reservationId}`);
+  return await fetchJson(url, { headers, signal }, {});
+}
+
+/**
+ * Updates table
+ * @returns {Promise<{table}>}
+ * a promise that resolves to a possibly empty object of table saved in the database. 
+ */
+export async function updateTable(table, signal) {
+  const { reservation_id, table_id } = table;
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
+  const options = {
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ data: { reservation_id: reservation_id } }),
+    signal
+  }
+  return await fetchJson(url, options, table);  
 }

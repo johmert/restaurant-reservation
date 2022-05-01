@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function ReservationView({ reservation }) {
     const { 
@@ -17,7 +18,8 @@ function ReservationView({ reservation }) {
             <p>Name: {first_name} {last_name}</p>
             <p>Mobile: {mobile_number}</p>
             <p>No. in Party: {people}</p>
-            <p>{reservation_date} at {reservation_time}</p> 
+            <p>{reservation_date} at {reservation_time}</p>
+            <Link className="btn" href={`/reservations/${reservation_id}/seat`}>Seat</Link> 
         </div>
     );
 }
