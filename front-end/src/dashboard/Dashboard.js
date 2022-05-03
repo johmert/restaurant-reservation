@@ -28,7 +28,7 @@ function Dashboard({ date, setDate }) {
       if(queryDate) {
         setDate(queryDate);
       } else {
-        setDate(today())
+        setDate(today());
       }
     }
     updateDate();
@@ -60,7 +60,6 @@ function Dashboard({ date, setDate }) {
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tablesError} />
       <div>
-        <h2>Reservations for {date}</h2>
         <div>
           <button onClick={() => history.push(`/dashboard?date=${previous(date)}`)}>Previous</button>
           <button onClick={() => history.push(`/dashboard?date=${today()}`)}>Today</button>

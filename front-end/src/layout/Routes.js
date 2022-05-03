@@ -15,14 +15,14 @@ import TablesForm from "./tables/TablesForm";
  * @returns {JSX.Element}
  */
 function Routes() {
-  const [date, setDate] = useState(today())
+  const [date, setDate] = useState(today());
 
   return (
     <Switch>
       <Route exact={true} path="/">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route path="/reservations/new">
+      <Route exact={true} path="/reservations/new">
         <ReservationForm />
       </Route>
       <Route path="/reservations/:reservation_id/seat">

@@ -88,6 +88,16 @@ function hasValidProperties(req, res, next) {
   next();
 }
 
+function isBooked(req, res, next) {
+  const { data : status } = req.body;
+  if(status === "seated" || status === "finished"){
+    return next({
+      status: 400,
+      message: "A new reservation cannot be created with a status of seated or finished"
+    });
+  }
+}
+
 function isValidDay(req, res, next) {
   const { data } = req.body;
   const reservationDate = new Date(
@@ -129,8 +139,8 @@ function isValidDay(req, res, next) {
 async function list(req, res) {
   const { date } = req.query;
   const reservations = await service.list(date);
-
-  res.json({ data: reservations });
+  
+  res.json({ data: reservations,});
 }
 
 function read(req, res) {  
@@ -148,6 +158,15 @@ async function reservationExists(req, res, next) {
     status: 404,
     message: `Reservation ${reservation_id ? reservation_id : ''} Not Found`
   });
+}
+
+async function update(req, res, next) {
+  const updated = {
+    ...res.locals.reservation,
+    status: req.body.data.status
+  }
+  const data = await service.update(updated);
+  res.json({ data });
 }
 
 module.exports = {
