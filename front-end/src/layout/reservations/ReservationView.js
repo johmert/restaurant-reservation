@@ -18,6 +18,9 @@ function ReservationView({ reservation }) {
             <p>Mobile: {mobile_number}</p>
             <p>No. in Party: {people}</p>
             <p>{reservation_date} at {reservation_time}</p> 
+            <div>
+                <button><a href={`/reservations/${reservation_id}/seat`}>Seat</a></button>
+            </div> 
         </div>
     );
 }
