@@ -22,13 +22,6 @@ async function read(reservation_id) {
         .first();
 }
 
-async function read(reservation_id) {
-    return knex("reservations")
-        .select("*")
-        .where({ reservation_id })
-        .first();
-}
-
 async function update(reservation) {
     return knex(table)
         .where({ reservation_id: reservation.reservation_id })
