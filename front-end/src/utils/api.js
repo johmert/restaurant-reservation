@@ -52,6 +52,16 @@ async function fetchJson(url, options, onCancel) {
   }
 }
 
+export async function clearTable(table_id, signal) {
+  const url = new URL(`${API_BASE_URL}/tables/${table_id}/seat`);
+  const options = {
+    method: 'DELETE',
+    headers,
+    signal
+  }
+  return await fetchJson(url, options, table_id);
+}
+
 /**
  * Creates a new reservation
  * @returns {Promise<{reservation}>}
