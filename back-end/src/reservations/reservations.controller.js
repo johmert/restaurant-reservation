@@ -124,29 +124,34 @@ function isValidDay(req, res, next) {
 }
 
 /**
- * List helper function, meant to help sort by date
- */
-function compare(previous, current) {
-  if(previous.reservation_time < current.reservation_time) return -1;
-  if(previous.reservation_time > current.reservation_time) return 1;
-  if(previous.reservation_time === current.reservation_time) return 0;
-}
-
-/**
  * List handler for reservation resources
  */
 async function list(req, res) {
   const { date } = req.query;
   const reservations = await service.list(date);
 
-  reservations.sort(compare);
+  res.json({ data: reservations });
+}
 
-  res.json({
-    data: reservations,
+function read(req, res) {  
+  res.json({ data: res.locals.reservation });
+}
+
+async function reservationExists(req, res, next) {
+  const { reservation_id } = req.params;
+  const reservation = await service.read(reservation_id);
+  if(reservation) {
+    res.locals.reservation = reservation;
+    return next();
+  }
+  next({
+    status: 404,
+    message: `Reservation ${reservation_id ? reservation_id : ''} Not Found`
   });
 }
 
 module.exports = {
   create: [hasValidProperties, isValidDay, asyncErrorBoundary(create)],
-  list: asyncErrorBoundary(list),
+  list: [asyncErrorBoundary(list)],
+  read: [asyncErrorBoundary(reservationExists), read],
 };
