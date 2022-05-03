@@ -13,7 +13,9 @@ function TableView({table}) {
             <p>ID:{table_id}</p>
             <p>Table: {table_name}</p>
             <p>Capacity: {capacity}</p>
-            <p data-table-id-status={table.table_id}>{reservation_id === null ? "Free" : "Occupied"}</p>
+            <p data-table-id-status={table_id}>
+                {reservation_id ? "Occupied" : "Free"}
+            </p>
         </div>
     );
 }

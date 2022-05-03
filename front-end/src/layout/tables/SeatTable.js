@@ -50,11 +50,9 @@ function SeatTable() {
         const reservation = parseInt(reservation_id);
         setShowError(null);
         setForm(initial);
-        console.log(table_id)
         try {
             await seatReservation(reservation, table_id, abortController.signal);
             history.push("/dashboard");
-            window.location.reload(false);
         } catch (error) {
             if(error.name !== "AbortError") setShowError(error);
         }
