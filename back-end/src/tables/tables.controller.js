@@ -4,6 +4,17 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 
 const validProperties = ["capacity", "table_name"];
 
+async function clearTable(req, res, next) {
+    const table = res.locals.table;
+    const clearedTable = {
+        ...table,
+        reservation_id: null
+    }
+    service.update(clearedTable)
+        .then(data => res.json({ data }))
+        .catch(next);
+}
+
 async function create(req, res) {
     const { data } = req.body
     const newTable = await service.create(data);
@@ -80,6 +91,17 @@ async function tableExists(req, res, next) {
     });
 }
 
+function tableOccupied(req, res, next) {
+    const table = res.locals.table;
+    if(table.reservation_id === null) {
+        return next({
+            status: 400,
+            message: "Table is not occupied!"
+        });
+    }
+    next();
+}
+
 async function update(req, res, next) {
     const table = res.locals.table;
     const updatedTable = {
@@ -127,6 +149,11 @@ function validTable(req, res, next) {
 }
 
 module.exports = {
+    clearTable: [
+        asyncErrorBoundary(tableExists),
+        tableOccupied,
+        asyncErrorBoundary(clearTable)
+    ],
     create: [
         hasValidProperties, 
         asyncErrorBoundary(create)
