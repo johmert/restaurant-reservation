@@ -8,12 +8,21 @@ async function create(reservation) {
         .then(created => created[0]);
 }
 
-async function list(reservation_date) {
+async function listByDate(reservation_date) {
     return knex(table)
         .select("*")
         .where({ reservation_date })
         .whereNot({ status: "finished" })
         .orderBy("reservation_time");
+}
+
+async function listByNumber(mobile_number) {
+    return knex(table)
+        .whereRaw(
+            "translate(mobile_number, '() -', '') like ?",
+            `%${mobile_number.replace(/\D/g, "")}%`
+        )
+        .orderBy("reservation_date");
 }
 
 async function read(reservation_id) {
@@ -39,7 +48,8 @@ async function updateStatus(reservation_id, status) {
 
 module.exports = {
     create,
-    list,
+    listByDate,
+    listByNumber,
     read,
     update,
     updateStatus
