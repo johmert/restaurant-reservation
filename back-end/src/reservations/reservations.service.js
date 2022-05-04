@@ -13,6 +13,7 @@ async function listByDate(reservation_date) {
         .select("*")
         .where({ reservation_date })
         .whereNot({ status: "finished" })
+        .whereNot({ status: "cancelled" })
         .orderBy("reservation_time");
 }
 
