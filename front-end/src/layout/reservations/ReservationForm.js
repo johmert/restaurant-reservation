@@ -30,9 +30,9 @@ function ReservationForm() {
             people: Number(form.people),
             reservation_date: form.reservation_date,
             reservation_time: form.reservation_time,
+            status: "booked",
         }
         setShowError(false);
-        console.log(newRes, typeof newRes.people);
         try {
             await createReservation(newRes, abortController.signal);
             setForm(initial);

@@ -59,7 +59,7 @@ export async function clearTable(table_id, signal) {
     headers,
     signal
   }
-  return await fetchJson(url, options, table_id);
+  return await fetchJson(url, options);
 }
 
 /**
