@@ -10,6 +10,7 @@ async function clearTable(req, res, next) {
         ...table,
         reservation_id: null
     }
+    reservationService.updateStatus(table.reservation_id, "finished");
     service.update(clearedTable)
         .then(data => res.json({ data }))
         .catch(next);
@@ -61,6 +62,17 @@ async function list(req, res) {
     res.json({ data });
 }
 
+function notSeated(req, res, next) {
+    const { reservation_id, status } = res.locals.reservation;
+    if(status === "seated"){
+        return next({
+            status: 400,
+            message: `Reservation ${reservation_id} has already been seated!`
+        });
+    }
+    next();
+}
+
 function read(req, res) {
     res.json({ data: res.locals.table });
 }
@@ -76,6 +88,19 @@ async function reservationExists(req, res, next) {
         status: 404,
         message: `Reservation ${reservation_id} Not Found`,
     });
+}
+
+async function seatTable(req, res, next) {
+    const reservation_id = res.locals.reservation.reservation_id;
+    const table = res.locals.table;
+    const updatedTable = {
+        ...table,
+        reservation_id: reservation_id,
+    }
+    reservationService.updateStatus(reservation_id, "seated");
+    service.update(updatedTable)
+        .then(data => res.json({ data }))
+        .catch(next);
 }
 
 async function tableExists(req, res, next) {
@@ -100,17 +125,6 @@ function tableOccupied(req, res, next) {
         });
     }
     next();
-}
-
-async function update(req, res, next) {
-    const table = res.locals.table;
-    const updatedTable = {
-        ...table,
-        reservation_id: req.body.data.reservation_id,
-    }
-    service.update(updatedTable)
-        .then(data => res.json({ data }))
-        .catch(next);
 }
 
 async function validRequest(req, res, next) {
@@ -168,6 +182,7 @@ module.exports = {
         asyncErrorBoundary(tableExists), 
         asyncErrorBoundary(reservationExists), 
         validTable,
-        asyncErrorBoundary(update)
+        notSeated,
+        asyncErrorBoundary(seatTable)
     ],
 }
