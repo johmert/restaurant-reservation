@@ -25,8 +25,9 @@ const validProperties = [
 
 const validStatuses = [
   "booked",
-  "seated",
+  "cancelled",
   "finished",
+  "seated",
 ];
 
 /** 
@@ -174,6 +175,16 @@ async function reservationExists(req, res, next) {
 
 async function update(req, res, next) {
   const updated = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id
+  }
+  service.update(updated)
+    .then(data => res.json({ data }))
+    .catch(next);
+}
+
+async function updateStatus(req, res, next) {
+  const updated = {
     ...res.locals.reservation,
     status: res.locals.status
   }
@@ -209,8 +220,13 @@ module.exports = {
   ],
   update: [
     asyncErrorBoundary(reservationExists),
+    hasValidProperties,
+    asyncErrorBoundary(update)
+  ],
+  updateStatus: [
+    asyncErrorBoundary(reservationExists),
     validStatus,
     notFinished,
-    asyncErrorBoundary(update),
+    asyncErrorBoundary(updateStatus),
   ],
 };
