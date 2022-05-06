@@ -48,7 +48,11 @@ function Dashboard({ date, setDate }) {
     return () => abortController.abort();
   }
 
-  const reservationList = reservations.map((reservation) => <ReservationView key={reservation.reservation_id} reservation={reservation} />);
+  const reservationList = reservations.map((reservation) =>{
+    if(reservation.status === "cancelled" || 
+      reservation.status === "finished") return null;
+    return <ReservationView key={reservation.reservation_id} reservation={reservation} /> 
+  });
   const tablesList = tables.map((table) => <TableView key={table.table_id} table={table} />)
 
   return (
