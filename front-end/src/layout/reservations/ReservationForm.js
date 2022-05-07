@@ -134,39 +134,41 @@ function ReservationForm({ mode }) {
     }
 
     return (
-    <div>
+    <div className="container fluid">
         <ErrorAlert className="alert alert-danger" error={showError} />
-        <h3 className="text-center">{mode.toUpperCase()}</h3>
-        <form onSubmit={handleSubmit}>
+        <h3 className="my-3 text-center">{mode.charAt(0).toUpperCase() + mode.slice(1) + " Reservation"}</h3>
+        <form className="d-flex flex-column" onSubmit={handleSubmit}>
             <label htmlFor="first_name">
                 First Name:
-                <input name="first_name" value={form["first_name"]} type="text" onChange={handleChange} />
+                <input className="form-control my-2" name="first_name" value={form["first_name"]} type="text" onChange={handleChange} />
             </label>
             <label htmlFor="last_name">
                 Last Name:
-                <input name="last_name" value={form["last_name"]} type="text" onChange={handleChange} />
+                <input className="form-control my-2" name="last_name" value={form["last_name"]} type="text" onChange={handleChange} />
             </label>
             <label htmlFor="mobile_number">
                 Phone Number:
-                <input name="mobile_number" value={form["mobile_number"]} placeholder="(---) --- ----" type="tel" onChange={handleChange} />
+                <input className="form-control my-2" name="mobile_number" value={form["mobile_number"]} placeholder="(---) --- ----" type="tel" onChange={handleChange} />
             </label>
             <label htmlFor="reservation_date">
                 Reservation Date:
-                <input name="reservation_date" value={form["reservation_date"]} pattern="\d{4}-\d{2}-\d{2}" 
+                <input className="form-control my-2" name="reservation_date" value={form["reservation_date"]} pattern="\d{4}-\d{2}-\d{2}" 
                     placeholder="YYYY-MM-DD" type="date" onChange={handleChange} />
             </label>
             <label htmlFor="reservation_time">
                 Reservation Time:
-                <input name="reservation_time" value={form["reservation_time"]} pattern="[0-9]{2}:[0-9]{2}"
+                <input className="form-control my-2" name="reservation_time" value={form["reservation_time"]} pattern="[0-9]{2}:[0-9]{2}"
                     placeholder="HH:MM" type="time" onChange={handleChange} />
             </label>  
             <label htmlFor="people">
-                Number of People in Party
-                <input name="people" value={form["people"]} min={1} placeholder={1}  type="number" onChange={handleChange} />
-            </label>            
-            <button type="submit">Submit</button>
-            <button onClick={() => history.goBack()}>Cancel</button>
-        </form>
+                Party Size:
+                <input className="form-control my-2" name="people" value={form["people"]} min={1} placeholder={1}  type="number" onChange={handleChange} />
+            </label>
+            <div className="d-flex justify-content-around m-3">
+                <button className="btn btn-success" type="submit">Submit</button>
+                <button className="btn btn-danger" onClick={() => history.goBack()}>Cancel</button>
+            </div>            
+       </form>
     </div>
     );
 }

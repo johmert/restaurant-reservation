@@ -29,8 +29,9 @@ function TableView({table}) {
     }
 
     const buttonSet = reservation_id ? (
-        <div>
+        <div className="d-flex justify-content-center m-3">
             <button 
+                className="btn btn-danger"
                 data-table-id-finish={table_id}
                 onClick={handleClick}>
                 Finish
@@ -39,12 +40,11 @@ function TableView({table}) {
     ) : <></>;
 
     return (
-        <div>
+        <div className="border container fluid my-3">
             <ErrorAlert error={showError} />
-            <p>ID:{table_id}</p>
-            <p>Table: {table_name}</p>
-            <p>Capacity: {capacity}</p>
-            <p data-table-id-status={table_id}>
+            <p className="h5 text-center">Table: {table_name}</p>
+            <p className="h6 text-center">Capacity: {capacity}</p>
+            <p className="h4 m-3 text-center" data-table-id-status={table_id}>
                 {reservation_id ? "Occupied" : "Free"}
             </p>
             {buttonSet}

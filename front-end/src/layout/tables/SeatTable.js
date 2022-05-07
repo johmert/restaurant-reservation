@@ -70,18 +70,18 @@ function SeatTable() {
     })
 
     return (
-        <div>
+        <div className="container fluid my-3">
             <ErrorAlert error={showError} />
-            <form onSubmit={handleSubmit}>
+            <form className="d-flex flex-column" onSubmit={handleSubmit}>
                 <label htmlFor="table_id">
                     Select Table:
-                    <select name="table_id" onChange={handleChange}>
+                    <select className="form-control" name="table_id" onChange={handleChange}>
                         <option>Select Table</option>
                         {tableOptions}
                     </select>
                 </label>
-                <button type="submit">Submit</button>
-                <button onClick={() => history.goBack()}>Cancel</button>
+                <button className="btn btn-success my-3" type="submit">Submit</button>
+                <button className="btn btn-danger" onClick={() => history.goBack()}>Cancel</button>
             </form>
         </div>
     );

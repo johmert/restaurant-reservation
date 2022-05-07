@@ -47,16 +47,17 @@ function SearchReservations() {
 
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div className="container fluid mt-3">
+            <p className="h2 text-center">Search for Reservation by Mobile Number</p>
+            <form className="d-flex flex-column my-4" onSubmit={handleSubmit}>
                 <label htmlFor="mobile_number">
                     Enter Mobile Number (partial or complete):
-                    <input name="mobile_number" type="tel" onChange={handleChange} />
+                    <input className="form-control my-2" name="mobile_number" type="tel" onChange={handleChange} />
                 </label>
-                <button type="submit">Find</button>
+                <button className="btn btn-info" type="submit">Find</button>
             </form>
             <ErrorAlert error={showError} />
-            {searchResults}
+            <div className="text-center">{searchResults}</div>
         </div>
     );
 }

@@ -56,24 +56,29 @@ function Dashboard({ date, setDate }) {
   const tablesList = tables.map((table) => <TableView key={table.table_id} table={table} />)
 
   return (
-    <main>
-      <h1>Dashboard</h1>
+    <main className="container fluid mt-3">
+      <h1 className="text-center">Dashboard</h1>
+      <div className="d-flex justify-content-between m-4">
+          <button className="btn btn-info px-3 py-2" onClick={() => history.push(`/dashboard?date=${previous(date)}`)}>Previous</button>
+          <button className="btn btn-primary px-3 py-2" onClick={() => history.push(`/dashboard?date=${today()}`)}>Today</button>
+          <button className="btn btn-info px-3 py-2" onClick={() => history.push(`/dashboard?date=${next(date)}`)}>Next</button>
+        </div>
       <div className="d-md-flex mb-3">
-        <h4 className="mb-0">Reservations for {date}</h4>
+        <h2 className="mb-0 text-center">Reservations for {date}</h2>
       </div>
       <ErrorAlert error={reservationsError} />
       <ErrorAlert error={tablesError} />
       <div>
-        <div>
-          <button onClick={() => history.push(`/dashboard?date=${previous(date)}`)}>Previous</button>
-          <button onClick={() => history.push(`/dashboard?date=${today()}`)}>Today</button>
-          <button onClick={() => history.push(`/dashboard?date=${next(date)}`)}>Next</button>
+
+        <div className="container fluid">
+          {reservationList}
         </div>
-        {reservationList}
       </div>
       <div>
-        <h2>Tables</h2>
-        {tablesList}
+        <h3 className="mt-4 text-center">Tables</h3>
+        <div className="container fluid">
+          {tablesList}
+        </div>
       </div>
     </main>
   );

@@ -20,23 +20,27 @@ function ReservationView({ reservation }) {
     }
     
     return (
-        <div>
+        <div className="border d-flex flex-column align-items-center p-2">
             <p data-reservation-id-status={reservation.reservation_id}>{reservation.status}</p>
             <p>Name: {reservation.first_name} {reservation.last_name}</p>
             <p>Mobile: {reservation.mobile_number}</p>
             <p>Party Size: {reservation.people}</p>
             <p>{reservation.reservation_date} at {reservation.reservation_time}</p> 
-            {reservation.status === "booked" ? <div>
-                    <button><a href={`/reservations/${reservation.reservation_id}/seat`}>
-                        Seat
-                    </a></button>
-                </div> : null}
             <div>
                 <ErrorAlert error={showError} />
-                <button><a href={`/reservations/${reservation.reservation_id}/edit`}>
-                    Edit
-                </a></button>
-                <button data-reservation-id-cancel={reservation.reservation_id} onClick={handleCancel}>
+                {reservation.status === "booked" ?
+                <button className="btn btn-success my-3 mr-3 px-3 py-2">
+                    <a href={`/reservations/${reservation.reservation_id}/seat`} style={{ color: "white", textDecoration: "none"}}>
+                        Seat
+                    </a>
+                </button>
+                : null}
+                <button className="btn btn-warning px-3 py-2">
+                    <a href={`/reservations/${reservation.reservation_id}/edit`} style={{ color: "white", textDecoration: "none"}}>
+                        Edit
+                    </a>
+                </button>
+                <button className="btn btn-danger mx-3 px-3 py-2" data-reservation-id-cancel={reservation.reservation_id} onClick={handleCancel}>
                     Cancel
                 </button>
             </div>

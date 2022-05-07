@@ -44,19 +44,21 @@ function TablesForm() {
     }
 
     return (
-        <div>
+        <div className="container fluid mt-3">
             <ErrorAlert className="alert alert-danger" error={showError} />
-            <form onSubmit={handleSubmit}>
+            <form className="d-flex flex-column" onSubmit={handleSubmit}>
                 <label htmlFor="table_name">
                     Table Name:
-                    <input name="table_name" type="text" min={2} onChange={handleChange} />
+                    <input className="form-control my-2" name="table_name" type="text" min={2} onChange={handleChange} />
                 </label>
                 <label htmlFor="capacity">
                     Table Capacity:
-                    <input name="capacity" type="number" onChange={handleChange} />
+                    <input className="form-control my-2" name="capacity" type="number" onChange={handleChange} />
                 </label>
-                <button type="submit">Submit</button>
-                <button onClick={() => history.goBack()}>Cancel</button>
+                <div className="d-flex justify-content-around m-3">
+                    <button className="btn btn-success" type="submit">Submit</button>
+                    <button className="btn btn-danger" onClick={() => history.goBack()}>Cancel</button>
+                </div>
             </form>
         </div>
     );
