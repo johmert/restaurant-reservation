@@ -36,7 +36,7 @@ Periodic tables is a restaurant reservation scheduler and management system. Use
 
 Create a reservation by clicking `New Reservation` in the navigation bar. A reservation requires a customer's first name, last name, party size, phone number, reservation date, and reservation time.
 
-![create reservation form](https://imgur.com/a/yjJcF3V)
+![create reservation form](https://i.imgur.com/u6HITM6.png)
 
 ### Manage Reservations
 
@@ -44,24 +44,24 @@ Reservations are managed on the dashboard. By default, the dashboard will list r
 
 Tables and their availability are listed below the day's reservations.
 
-![reservation dashboard](https://imgur.com/RecHNVO)
+![reservation dashboard](https://imgur.com/RecHNVO.png)
 
 When a user clicks the `Seat` button associated with a reservation, they'll be taken to the seating page, which allows them to choose which table they would like to seat the reservation at.
 > **Note** Tables with a capacity smaller than a reservation's party size are disabled and cannot be selected.
 
-![seat reservation](https://imgur.com/63gPZld)
+![seat reservation](https://imgur.com/63gPZld.png)
 
 ### Search Reservations
 
 Users can search for a reservation by mobile number, full or partial. This can be done by clicking the `Search` button in the navigation bar.
 
-![search reservations](https://imgur.com/JLuzclA)
+![search reservations](https://imgur.com/JLuzclA.png)
 
 ### Add Tables
 
 Users can add additional tables to the management system (ex: after an expansion). This can be done by clicking the `New Table` button in the navigation bar.
 
-![create table](https://imgur.com/i8FSu6p)
+![create table](https://imgur.com/i8FSu6p.png)
 
 ## API
 
