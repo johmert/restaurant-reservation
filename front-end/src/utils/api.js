@@ -13,6 +13,7 @@ const API_BASE_URL =
  */
 const headers = new Headers();
 headers.append("Content-Type", "application/json");
+headers.append("Access-Control-Allow-Origin", "*");
 
 /**
  * Fetch `json` from the specified URL and handle error status codes and ignore `AbortError`s
