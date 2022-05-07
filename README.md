@@ -1,6 +1,6 @@
 # Periodic Tables
 
-## Deployed Link [https://periodic-tables-reserve.herokuapp.com/]
+## Deployed Link [https://restaurant-reservation-brown.vercel.app/dashboard]
 
 ## Table of Contents
 
