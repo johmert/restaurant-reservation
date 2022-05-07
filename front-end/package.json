@@ -1,5 +1,7 @@
 {
-  "name": "starter-restaurant-reservation-front-end",
+  "engines": {
+    "node": "14"
+  },"name": "starter-restaurant-reservation-front-end",
   "version": "1.0.0",
   "description": "Starter code for restaurant reservation frontend",
   "main": "src/index.js",
@@ -9,9 +11,7 @@
     "directory": "/front-end"
   },
   "private": true,
-  "engines": {
-    "node": "14"
-  },
+  
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
