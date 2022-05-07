@@ -32,7 +32,6 @@ function TablesForm() {
             table_name: form.table_name,
         }
         setShowError(false);
-        console.log(newTable);
         try {
             await createTable(newTable, abortController.signal);
             setForm(initial);

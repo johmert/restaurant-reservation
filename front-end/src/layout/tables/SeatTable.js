@@ -61,7 +61,6 @@ function SeatTable() {
 
     const tableOptions = tables.map(table => {
         const disabled = (Number(table.capacity) < Number(reservation.people));
-        console.log(disabled);
         return (
             <option key={table.table_id} value={table.table_id} disabled={disabled}>
                 {table.table_name} - {table.capacity}

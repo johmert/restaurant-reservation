@@ -120,8 +120,6 @@ function ReservationForm({ mode }) {
                 status: "booked",
             }
             try {
-                console.log(updatedRes.reservation_date, "--------------------------------------------");
-                
                 await updateReservation(updatedRes, abortController.signal);
                 history.push(`/dashboard?date=${updatedRes.reservation_date}`)
             } catch (error) {
